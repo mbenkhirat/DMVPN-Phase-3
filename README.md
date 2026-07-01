@@ -3,6 +3,10 @@
 💬 Description:
 Successfully completed the migration to IPSec over DMVPN Phase 3, transitioning from the previous IPsec over GRE Hub and Spoke architecture (https://lnkd.in/e9AtC5GN). The network now boasts enhanced flexibility and scalability with a DMVPN dual HUB dual Cloud setup, optimizing bandwidth and simplifying remote connection management.
 
+🗺️ Lab Topology
+<img width="1922" height="1107" alt="image" src="https://github.com/user-attachments/assets/0a5e32d1-b71d-4456-a679-382f7c000c6a" />
+
+
 🔒 Maximum Security:
 The new architecture ensures maximum security by leveraging IPSec over DMVPN Phase 3, providing end-to-end encryption for data transmitted between headquarters and remote sites. With a dual HUB dual Cloud setup, enhanced redundancy and resilience are achieved, minimizing the risk of downtime and ensuring data integrity.
 
