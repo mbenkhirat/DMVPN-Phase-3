@@ -1,1 +1,192 @@
+!
+version 15.7
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname RBT-RN
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
 
+
+!
+ip dhcp excluded-address 192.168.100.1
+!
+ip dhcp pool VLAN1
+ network 192.168.100.0 255.255.255.0
+ default-router 192.168.100.1 
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+crypto isakmp policy 1
+ encr aes
+ hash md5
+ authentication pre-share
+crypto isakmp key Benk@1234 address 10.0.0.1       
+crypto isakmp key Benk@1234 address 20.0.0.1       
+crypto isakmp key Benk@1234 address 0.0.0.0        
+!
+!
+crypto ipsec transform-set TS_AES_SHA esp-aes esp-sha-hmac 
+ mode transport
+!
+crypto ipsec profile Spoke-to-HUB
+ set transform-set TS_AES_SHA 
+!
+!
+!
+!
+!
+!
+!
+interface Loopback100
+ no shutdown
+ ip address 40.0.0.100 255.255.255.255
+!
+interface Loopback101
+ no shutdown
+ ip address 40.0.0.101 255.255.255.255
+!
+interface Tunnel0
+ no shutdown
+ description To-HUB1
+ ip address 192.168.200.2 255.255.255.0
+ no ip redirects
+ ip nhrp authentication DMVPN
+ ip nhrp map 192.168.200.1 10.0.0.1
+ ip nhrp map multicast 10.0.0.1
+ ip nhrp network-id 1
+ ip nhrp nhs 192.168.200.1
+ ip ospf network point-to-multipoint
+ tunnel source Loopback100
+ tunnel mode gre multipoint
+ tunnel key 1
+ tunnel protection ipsec profile Spoke-to-HUB
+!
+interface Tunnel1
+ no shutdown
+ description To-HUB2
+ ip address 192.168.210.2 255.255.255.0
+ no ip redirects
+ ip nhrp authentication DMVPN
+ ip nhrp map 192.168.210.1 20.0.0.1
+ ip nhrp map multicast 20.0.0.1
+ ip nhrp network-id 100
+ ip nhrp nhs 192.168.210.1
+ ip ospf network point-to-multipoint
+ ip ospf cost 1100
+ tunnel source Loopback101
+ tunnel mode gre multipoint
+ tunnel key 2
+ tunnel protection ipsec profile Spoke-to-HUB
+!
+interface Ethernet0/0
+ no shutdown
+ ip address 192.168.100.1 255.255.255.0
+ duplex auto
+!
+interface Ethernet0/1
+ no shutdown
+ ip address 40.0.0.1 255.255.255.252
+ duplex auto
+!
+interface Ethernet0/2
+ no shutdown
+ no ip address
+ shutdown
+ duplex auto
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+ shutdown
+ duplex auto
+!
+router ospf 1
+ router-id 3.3.3.3
+ passive-interface Ethernet0/0
+ network 192.168.100.0 0.0.0.255 area 0
+ network 192.168.200.0 0.0.0.255 area 0
+ network 192.168.210.0 0.0.0.255 area 0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 40.0.0.2
+!
+ipv6 ioam timestamp
+!
+!
+access-list 100 permit ip 192.168.0.0 0.0.255.255 any
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+ntp server 34.202.215.187 minpoll 7
+ntp server pool.ntp.org
+!
+end
