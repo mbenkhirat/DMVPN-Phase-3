@@ -1,4 +1,4 @@
-# Lab : IPSec over DMVPN Phase 3 with Dual HUB Dual Cloud Architecture
+# IPSec over DMVPN Phase 3 with Dual HUB Dual Cloud Architecture
 
 💬 Description:
 Successfully completed the migration to IPSec over DMVPN Phase 3, transitioning from the previous IPsec over GRE Hub and Spoke architecture (https://lnkd.in/e9AtC5GN). The network now boasts enhanced flexibility and scalability with a DMVPN dual HUB dual Cloud setup, optimizing bandwidth and simplifying remote connection management.
